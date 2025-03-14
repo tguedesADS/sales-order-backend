@@ -7,5 +7,13 @@
     // "csv (semicolon)",
     // "tab",
     // "tsv"
+  ],
+  "sqltools.useNodeRuntime": true,
+  "sqltools.connections": [
+    {
+      "name": "SQLite Database",
+      "driver": "SQLite",
+      "database": "${workspaceFolder}/sqlite.db"
+    }
   ]
 }
