@@ -1,6 +1,15 @@
 @localhost = localhost:4004/odata/v4/main
+@id = 539966d4-e645-4665-b099-db9231f88bf1
+@customerId = 30a84a1b-b405-4261-9abf-9ce0ddbd550a
+
+@productId = e1e003e2-5167-46c6-9c50-6b68ce1950a5
 
 GET http://{{localhost}}/SalesOrderHeaders
+Content-Type: application/json
+
+###
+
+GET http://{{localhost}}/SalesOrderHeaders?$filter=id eq {{id}}&$expand=items
 Content-Type: application/json
 
 ###
@@ -8,16 +17,35 @@ Content-Type: application/json
 POST http://{{localhost}}/SalesOrderHeaders
 Content-Type: application/json
 
-{}
+{
+    "id": "{{id}}",
+    "customer_id": "{{customerId}}",
+    "items": [
+        {
+            "id": "b9d18e43-4074-4c4b-b693-eed2d5d79ea9",
+            "header_id": "{{id}}",
+            "product_id": "{{productId}}",
+            "quantity": 10,
+            "price": 2.99
+        },
+        {
+            "id": "43303caa-d432-412b-aa63-1224831077ee",
+            "header_id": "{{id}}",
+            "product_id": "{{productId}}",
+            "quantity": 5,
+            "price": 1.99
+        }
+    ]
+}
 
 ###
 
-DELETE http://{{localhost}}/SalesOrderHeaders(id=c03582dc-2902-4ae0-a973-7716dff68867)
+DELETE http://{{localhost}}/SalesOrderHeaders(id={{id}})
 Content-Type: application/json
 
 ###
 
-PUT http://{{localhost}}/SalesOrderHeaders(id=c03582dc-2902-4ae0-a973-7716dff68867)
+PATCH http://{{localhost}}/SalesOrderHeaders(id={{id}})
 Content-Type: application/json
 
 {}
