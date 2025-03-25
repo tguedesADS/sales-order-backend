@@ -1,0 +1,39 @@
+@localhost = localhost:4004/odata/v4/main
+
+@id = 123e4567-e89b-12d3-a456-426614174000
+GET http://{{localhost}}/Customers
+Content-Type: application/json
+
+###
+
+POST http://{{localhost}}/Customers
+Content-Type: application/json
+
+{   "id": "{{id}}",
+    "firstName": "Thalia",
+    "lastName": "Guedes",
+    "email": "tguedes@example.com"
+}
+
+###
+
+DELETE http://{{localhost}}/Customers(id={{id}})
+Content-Type: application/json
+
+###
+
+PUT http://{{localhost}}/Customers(id={{id}})
+Content-Type: application/json
+
+{
+    "firstName": "teste1"
+}
+
+###
+
+PATCH http://{{localhost}}/Customers(id={{id}})
+Content-Type: application/json
+
+{
+    "firstName": "teste2"
+}
