@@ -77,3 +77,15 @@ GET http://{{localhost}}/SalesOrderHeaders?$select=customer,id
 
 # Selecionar somente email do customer
 GET http://{{localhost}}/SalesOrderHeaders?$select=customer,id&$expand=customer($select=email)
+
+###
+
+# Descobrindo a quantidade de registros
+GET http://{{localhost}}/SalesOrderHeaders/$count
+
+###
+
+# Paginando os registros
+GET http://{{localhost}}/SalesOrderHeaders?$top=3&$skip=0
+
+###
