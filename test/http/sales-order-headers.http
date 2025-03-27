@@ -48,6 +48,10 @@ Content-Type: application/json
 PATCH http://{{localhost}}/SalesOrderHeaders(id={{id}})
 Content-Type: application/json
 
-{}
-
 ###
+
+### Buscar todos os pedidos maiores ou iguais a 90
+GET http://{{localhost}}/SalesOrderHeaders?$filter=totalAmount ge 90
+
+### Buscar todos os pedidos menores ou iguais a 50
+GET http://{{localhost}}/SalesOrderHeaders?$filter=totalAmount le 50
