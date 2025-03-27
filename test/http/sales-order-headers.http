@@ -55,3 +55,9 @@ GET http://{{localhost}}/SalesOrderHeaders?$filter=totalAmount ge 90
 
 ### Buscar todos os pedidos menores ou iguais a 50
 GET http://{{localhost}}/SalesOrderHeaders?$filter=totalAmount le 50
+
+### Expandir os itens do pedido
+GET http://{{localhost}}/SalesOrderHeaders?$expand=items($expand=product),customer
+
+### Filtrar os pedidos pelo total de 50 e expandir os itens do pedido
+GET http://{{localhost}}/SalesOrderHeaders?$expand=items($expand=product;$filter=quantity le 99),customer
