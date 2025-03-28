@@ -44,3 +44,11 @@ Content-Type: application/json
 # Buscando dados com search
 GET http://{{localhost}}/Customers?$search=99
 Content-Type: application/json
+
+###
+
+#Ordernando dados com orderby descrescente
+GET http://{{localhost}}/Customers?$orderby=firstName desc
+Content-Type: application/json
+###
+
