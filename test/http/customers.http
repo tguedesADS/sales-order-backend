@@ -38,3 +38,9 @@ Content-Type: application/json
 {
     "firstName": "teste2"
 }
+
+###
+
+# Buscando dados com search
+GET http://{{localhost}}/Customers?$search=99
+Content-Type: application/json

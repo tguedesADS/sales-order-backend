@@ -89,3 +89,8 @@ GET http://{{localhost}}/SalesOrderHeaders/$count
 GET http://{{localhost}}/SalesOrderHeaders?$top=3&$skip=0
 
 ###
+
+# Buscando dados com search
+GET http://{{localhost}}/SalesOrderHeaders?$search=2kcg
+
+###
