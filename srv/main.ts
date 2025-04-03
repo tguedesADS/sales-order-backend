@@ -1,5 +1,5 @@
 import cds, { Service, Request } from '@sap/cds';
-import { Customers } from '@models/sales';
+import { Customers, Product, Products, SalesOrderItem, SalesOrderItems } from '@models/sales';
 
 export default (srv: Service) => {
     srv.after('READ', 'Customers', (results: Customers) => {
@@ -11,6 +11,7 @@ export default (srv: Service) => {
     });
     srv.before('CREATE', 'SalesOrderHeaders', async (request: Request) => {
         const params = request.data;
+        const items: SalesOrderItems = params.items;
         if(!params.customer_id) {
             return request.reject(400, 'Customer inválido');
         }
@@ -21,6 +22,18 @@ export default (srv: Service) => {
         const customer = await cds.run(customerQuery);
         if(!customer) {
             return request.reject(404, 'Customer não encontrado');
+        }
+        const productsIds: string[] = params.items.map((item: SalesOrderItem) => item.product_id);
+        const productsQuery = SELECT.from('sales.Products').where({ id: productsIds });
+        const products: Products = await cds.run(productsQuery);
+        for(const item of items) {
+            const dbProduct = products.find(product => product.id === item.product_id);
+            if(!dbProduct) {
+            return request.reject(404, `Produto ${item.product_id} não encontrado`);
+            }
+            if(dbProduct.stock === 0) {
+                return request.reject(400, `Produto ${dbProduct.name}(${dbProduct.id}) sem estoque disponível`);
+            }
         }
     });
 }
