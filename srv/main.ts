@@ -49,6 +49,11 @@ export default (srv: Service) => {
         items.forEach(item => {
             totalAmount += (item.price as number) * (item.quantity as number);
         })
+
+        if(totalAmount > 3000) {
+            const discount = totalAmount * 0.1;
+            totalAmount = totalAmount - discount;
+        }
         request.data.totalAmount = totalAmount;
     });
     srv.after('CREATE', 'SalesOrderHeaders', async (results: SalesOrderHeaders) => {

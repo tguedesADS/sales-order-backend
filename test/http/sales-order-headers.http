@@ -30,14 +30,14 @@ Authorization: Basic admin:admin@123
             "header_id": "{{id}}",
             "product_id": "{{productId1}}",
             "quantity": 10,
-            "price": 2.99
+            "price": 100
         },
         {
             "id": "43303caa-d432-412b-aa63-1224831077ee",
             "header_id": "{{id}}",
             "product_id": "{{productId2}}",
             "quantity": 5,
-            "price": 1.99
+            "price": 200
         }
     ]
 }
