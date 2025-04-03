@@ -31,3 +31,10 @@ entity Products {
         price: Decimal(15, 2);
         stock: Integer;
 }
+
+entity SalesOrderLogs: managed {
+    key id: UUID;
+        header: Association to SalesOrderHeaders;
+        userData: LargeString;
+        orderData: LargeString;
+}
