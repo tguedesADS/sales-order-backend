@@ -2,9 +2,9 @@
 @id = 539966d4-e645-4665-b099-db9231f88bf1
 @customerId = 30a84a1b-b405-4261-9abf-9ce0ddbd550a
 
-@productId1 = 26220727-09af-4bca-8435-376b52289ee7
+@productId1 = 9549086c-2a95-4c2b-89b6-988bb14877e4
 
-@productId2 = 95490858-d6b1-4090-8818-1d12c3a2765c
+@productId2 = 95490858-d6b1-4090-8818-1d12c3a2215c
 
 
 GET http://{{localhost}}/SalesOrderHeaders
@@ -19,6 +19,7 @@ Content-Type: application/json
 
 POST http://{{localhost}}/SalesOrderHeaders
 Content-Type: application/json
+Authorization: Basic admin:admin@123
 
 {
     "id": "{{id}}",
