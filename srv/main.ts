@@ -56,7 +56,7 @@ export default (srv: Service) => {
         }
         request.data.totalAmount = totalAmount;
     });
-    srv.after('CREATE', 'SalesOrderHeaders', async (results: SalesOrderHeaders) => {
+    srv.after('CREATE', 'SalesOrderHeaders', async (results: SalesOrderHeaders, request: Request) => {
         const headersAsArray = Array.isArray(results) ? results : [results] as SalesOrderHeaders;
         for (const header of headersAsArray) {
             const items = header.items as SalesOrderItems;
@@ -72,6 +72,14 @@ export default (srv: Service) => {
                 foundProduct.stock = (foundProduct.stock as number) - productData.quantity;
                 await cds.update('sales.Products').where({ id: foundProduct.id }).with({ stock: foundProduct.stock });
             }
+            const headersAsStrings = JSON.stringify(header);
+            const userAsStrings = JSON.stringify(request.user);
+            const log = [{
+                header_id: header.id,
+                userData: userAsStrings,
+                orderData: headersAsStrings,
+            }];
+            await cds.create('sales.SalesOrderLogs').entries(log);
         }
     });
 }
