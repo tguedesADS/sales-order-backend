@@ -2,6 +2,16 @@ import cds, { Service, Request } from '@sap/cds';
 import { Customers, Product, Products, SalesOrderHeader, SalesOrderHeaders, SalesOrderItem, SalesOrderItems } from '@models/sales';
 
 export default (srv: Service) => {
+    srv.before('READ', '*', (request: Request) => {
+        if(!request.user.is('read_only_user')) {
+            return request.reject(403, 'Não autorizado');
+        }
+    });
+    srv.before(['WRITE', 'DELETE'], '*', (request: Request) => {
+        if(!request.user.is('admin')) {
+            return request.reject(403, 'Não autorizada a escrita/deleção');
+        }
+    });
     srv.after('READ', 'Customers', (results: Customers) => {
         results.forEach(customer => {
             if (!customer.email?.includes('@')) {
