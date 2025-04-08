@@ -1,6 +1,7 @@
 import cds, { Service, Request } from '@sap/cds';
 import { Customers, Product, Products, SalesOrderHeader, SalesOrderHeaders, SalesOrderItem, SalesOrderItems } from '@models/sales';
-
+import { customerController } from './factories/controllers/customer';
+import { FullResquetParams } from './routes/protocols';
 export default (srv: Service) => {
     srv.before('READ', '*', (request: Request) => {
         if(!request.user.is('read_only_user')) {
@@ -12,12 +13,8 @@ export default (srv: Service) => {
             return request.reject(403, 'Não autorizada a escrita/deleção');
         }
     });
-    srv.after('READ', 'Customers', (results: Customers) => {
-        results.forEach(customer => {
-            if (!customer.email?.includes('@')) {
-                customer.email = `${customer.email}@gmail.com`;
-            }
-        });
+    srv.after('READ', 'Customers', (customersList: Customers, request) => {
+       (request as unknown as FullResquetParams<Customers>).results = customerController.afterRead(customersList);
     });
     srv.before('CREATE', 'SalesOrderHeaders', async (request: Request) => {
         const params = request.data;
