@@ -43,6 +43,6 @@ export class SalesOrderLogModel {
             header_id: this.headerId,
             userData: this.userData,
             orderData: this.orderData,
-        }
+        };
     }
 }

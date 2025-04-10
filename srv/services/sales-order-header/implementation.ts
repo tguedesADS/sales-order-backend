@@ -1,16 +1,16 @@
-import { User } from "@sap/cds";
+import { User } from '@sap/cds';
 
-import { SalesOrderHeader, SalesOrderHeaders, SalesOrderItem } from "@models/sales";
-import { CreationPayloadValidationResult, SalesOrderHeaderService } from "./protocols";
-import { SalesOrderHeaderModel } from "../../models/sales-order-header"; 
-import { SalesOrderItemModel } from "../../models/sales-order-item";
-import { ProductRepository } from "../../repositories/product/protocols";
-import { CustomerRepository } from "srv/repositories/customer/protocols";
-import { ProductModel } from "srv/models/product";
-import { CustomerModel } from "srv/models/customer";
-import { SalesOrderLogModel } from "srv/models/sales-order-log";
-import { SalesOrderLogRepository } from "srv/repositories/sales-order-log/protocols";
-import { LoggedUserModel } from "srv/models/logged-user";
+import { CreationPayloadValidationResult, SalesOrderHeaderService } from './protocols';
+import { SalesOrderHeader, SalesOrderHeaders, SalesOrderItem } from '@models/sales';
+import { CustomerModel } from 'srv/models/customer';
+import { CustomerRepository } from 'srv/repositories/customer/protocols';
+import { LoggedUserModel } from 'srv/models/logged-user';
+import { ProductModel } from 'srv/models/product';
+import { ProductRepository } from '../../repositories/product/protocols';
+import { SalesOrderHeaderModel } from '../../models/sales-order-header'; 
+import { SalesOrderItemModel } from '../../models/sales-order-item';
+import { SalesOrderLogModel } from 'srv/models/sales-order-log';
+import { SalesOrderLogRepository } from 'srv/repositories/sales-order-log/protocols';
 
 export class SalesOrderHeaderServiceImpl implements SalesOrderHeaderService {
     constructor(
@@ -23,10 +23,10 @@ export class SalesOrderHeaderServiceImpl implements SalesOrderHeaderService {
     public async beforeCreate(params: SalesOrderHeader): Promise<CreationPayloadValidationResult> {
         const products = await this.getProductsByIds(params);
         if(!products) {
-           return {
-            hasErrors: true,
-            error: new Error('Nenhum produto da lista de itens foi encontrado')
-           }
+            return {
+                hasErrors: true,
+                error: new Error('Nenhum produto da lista de itens foi encontrado')
+            };
         }
         const items = this.getSalesOrderItems(params, products);
         const header = this.getSalesOrderHeader(params, items);
@@ -35,9 +35,9 @@ export class SalesOrderHeaderServiceImpl implements SalesOrderHeaderService {
             return {
                 hasErrors: true,
                 error: new Error('Customer não encontrado')
-            }
+            };
         }
-        const HeaderValidationResult = header.validateCreationPayload({ customer_id: customer.id })
+        const HeaderValidationResult = header.validateCreationPayload({ customer_id: customer.id });
         if(HeaderValidationResult.hasErrors) {
             return  HeaderValidationResult;
         }
@@ -45,7 +45,7 @@ export class SalesOrderHeaderServiceImpl implements SalesOrderHeaderService {
         return {
             hasErrors: false,
             totalAmount: header.calculateDiscount()
-        }
+        };
     }
 
     public async afterCreate(params: SalesOrderHeaders, loggedUser: User): Promise<void> {
@@ -58,7 +58,7 @@ export class SalesOrderHeaderServiceImpl implements SalesOrderHeaderService {
             const productsData = salesOrderHeader.getProductsData();
             for(const product of products) {
                 const foundProduct = productsData.find(productData => productData.id === product.id);
-                product.sell(foundProduct?.quantity as number)
+                product.sell(foundProduct?.quantity as number);
                 await this.productRepository.updateStock(product);
             }
             const user = this.getLoggedUser(loggedUser);
@@ -99,7 +99,7 @@ export class SalesOrderHeaderServiceImpl implements SalesOrderHeaderService {
     }
 
     private  async getCustomerById(params: SalesOrderHeader): Promise<CustomerModel | null> {
-        const costumerId = params.customer_id as string
+        const costumerId = params.customer_id as string;
         return this.customerRepository.findById(costumerId);
     }
 

@@ -1,4 +1,4 @@
-import { ProductModel } from "./product";
+import { ProductModel } from './product';
 
 export type SalesOrderItemProps = {
     id: string;
@@ -55,16 +55,16 @@ export class SalesOrderItemModel {
             return {
                 hasErrors: true,
                 error: new Error(`Produto ${params.product_id} não encontrado`)
-            }
+            };
         }
         if(product.stock === 0) {
             return {
                 hasErrors: true,
                 error: new Error(`Produto ${product.name}(${product.id}) sem estoque disponível`)
-            }
+            };
         }
         return {
             hasErrors: false
-        }
+        };
     }
 }

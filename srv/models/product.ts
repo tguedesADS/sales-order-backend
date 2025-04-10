@@ -41,11 +41,11 @@ export class ProductModel {
             return {
                 hasErrors: true,
                 error: new Error('Quantidade de produtos insuficiente no estoque')
-            }
+            };
         }
         this.stock -= amount;
         return {
             hasErrors: false
-        }
+        };
     }
 }

@@ -1,4 +1,4 @@
-import { SalesOrderItemModel } from "./sales-order-item";
+import { SalesOrderItemModel } from './sales-order-item';
 
 type SalesOrderHeaderProps = {
     id: string;
@@ -50,7 +50,7 @@ export class SalesOrderHeaderModel {
     }
 
     public set totalAmount(amount: number) {
-        this.totalAmount = amount
+        this.totalAmount = amount;
     }
 
     public validateCreationPayload(params: CreationPayload): CreationPayloadValidationResult {
@@ -109,7 +109,7 @@ export class SalesOrderHeaderModel {
         let totalAmount = 0;
         this.items.forEach(item => {
             totalAmount += (item.price as number) * (item.quantity as number);
-        })
+        });
         return totalAmount;
     }
 

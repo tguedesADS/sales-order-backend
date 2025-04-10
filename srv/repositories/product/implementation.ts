@@ -1,7 +1,7 @@
 import cds from '@sap/cds';
 
-import { ProductModel, ProductProps } from "srv/models/product";
-import { ProductRepository } from "./protocols";
+import { ProductModel, ProductProps } from 'srv/models/product';
+import { ProductRepository } from './protocols';
 import { Products } from '@models/sales';
 
 export class ProductRepositoryImpl implements ProductRepository {
