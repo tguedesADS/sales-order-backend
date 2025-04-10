@@ -5,7 +5,7 @@ import { SalesOrderLogRepository } from './protocols';
 
 export class SalesOrderLogRepositoryImpl implements SalesOrderLogRepository {
     public async create(logs: SalesOrderLogModel[]): Promise<void> {
-        const logsObject = logs.map(log => log.toObject());
+        const logsObject = logs.map((log) => log.toObject());
         await cds.create('sales.SalesOrderLogs').entries(logsObject);
     }
 }

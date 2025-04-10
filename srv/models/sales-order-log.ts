@@ -3,13 +3,13 @@ type SalesOrderLogProps = {
     headerId: string;
     userData: string;
     orderData: string;
-}
+};
 
 type SalesOrderLogPropsWithIdProps = Omit<SalesOrderLogProps, 'id'>;
 
 type SalesOrderLogDbProps = Omit<SalesOrderLogProps, 'headerId'> & {
     header_id: string;
-}
+};
 
 export class SalesOrderLogModel {
     constructor(private props: SalesOrderLogProps) {}
@@ -42,7 +42,7 @@ export class SalesOrderLogModel {
             id: this.id,
             header_id: this.headerId,
             userData: this.userData,
-            orderData: this.orderData,
+            orderData: this.orderData
         };
     }
 }

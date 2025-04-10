@@ -5,22 +5,22 @@ type SalesOrderHeaderProps = {
     customerId: string;
     totalAmount: number;
     items: SalesOrderItemModel[];
-}
+};
 
 type SalesOrderHeaderPropsWithIdAndTotalAmount = Omit<SalesOrderHeaderProps, 'id' | 'totalAmount'>;
 
 type CreationPayload = {
     customer_id: SalesOrderHeaderProps['customerId'];
-}
+};
 
 type CreationPayloadValidationResult = {
     hasErrors: boolean;
     error?: Error;
-}
+};
 
 export class SalesOrderHeaderModel {
     constructor(private props: SalesOrderHeaderProps) {}
-    
+
     public static create(props: SalesOrderHeaderPropsWithIdAndTotalAmount): SalesOrderHeaderModel {
         return new SalesOrderHeaderModel({
             ...props,
@@ -55,20 +55,20 @@ export class SalesOrderHeaderModel {
 
     public validateCreationPayload(params: CreationPayload): CreationPayloadValidationResult {
         const customerValidationResult = this.validateCustomerOnCreation(params.customer_id);
-        if(customerValidationResult.hasErrors) {
+        if (customerValidationResult.hasErrors) {
             return customerValidationResult;
         }
         const itemsValidationResult = this.validateItemsOnCreation(this.items);
-        if(itemsValidationResult.hasErrors) {
+        if (itemsValidationResult.hasErrors) {
             return itemsValidationResult;
         }
         return {
             hasErrors: false
         };
     }
-    
+
     private validateCustomerOnCreation(customerId: CreationPayload['customer_id']): CreationPayloadValidationResult {
-        if(!customerId) {
+        if (!customerId) {
             return {
                 hasErrors: true,
                 error: new Error('Customer inválido')
@@ -80,20 +80,20 @@ export class SalesOrderHeaderModel {
     }
 
     private validateItemsOnCreation(items: SalesOrderHeaderProps['items']): CreationPayloadValidationResult {
-        if(!items || items?.length === 0 ) {
+        if (!items || items?.length === 0) {
             return {
                 hasErrors: true,
                 error: new Error('Itens inválidos')
             };
         }
         const itemsErros: string[] = [];
-        items.forEach(item => {
+        items.forEach((item) => {
             const validationResult = item.validateCreationPayload({ product_id: item.productId });
             if (validationResult.hasErrors) {
                 itemsErros.push(validationResult.error?.message as string);
             }
         });
-        if(itemsErros.length > 0) {
+        if (itemsErros.length > 0) {
             const messages = itemsErros.join('\n - ');
             return {
                 hasErrors: true,
@@ -107,7 +107,7 @@ export class SalesOrderHeaderModel {
 
     public calculateTotalAmount(): number {
         let totalAmount = 0;
-        this.items.forEach(item => {
+        this.items.forEach((item) => {
             totalAmount += (item.price as number) * (item.quantity as number);
         });
         return totalAmount;
@@ -115,18 +115,18 @@ export class SalesOrderHeaderModel {
 
     public calculateDiscount(): number {
         let totalAmount = this.calculateTotalAmount();
-        if(totalAmount > 3000) {
+        if (totalAmount > 3000) {
             const discount = totalAmount * 0.1;
             totalAmount = totalAmount - discount;
         }
         return totalAmount;
     }
 
-    public getProductsData(): { id: string, quantity: number }[] {
-        return this.items.map(item => ({
+    public getProductsData(): { id: string; quantity: number }[] {
+        return this.items.map((item) => ({
             id: item.productId,
             quantity: item.quantity
-        })); 
+        }));
     }
     public toStringifiedObject(): string {
         return JSON.stringify(this.props);

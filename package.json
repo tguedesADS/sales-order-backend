@@ -29,6 +29,7 @@
   },
   "scripts": {
     "start": "cds-serve",
-    "dev": "cds-tsx watch"
+    "dev": "cds-tsx watch",
+    "lint": "eslint ./srv"
   }
 }

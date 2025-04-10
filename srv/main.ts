@@ -7,12 +7,12 @@ import { salesOrderHeaderController } from './factories/controllers/sales-order-
 
 export default (srv: Service) => {
     srv.before('READ', '*', (request: Request) => {
-        if(!request.user.is('read_only_user')) {
+        if (!request.user.is('read_only_user')) {
             return request.reject(403, 'Não autorizado');
         }
     });
     srv.before(['WRITE', 'DELETE'], '*', (request: Request) => {
-        if(!request.user.is('admin')) {
+        if (!request.user.is('admin')) {
             return request.reject(403, 'Não autorizada a escrita/deleção');
         }
     });
@@ -20,8 +20,8 @@ export default (srv: Service) => {
         (request as unknown as FullResquetParams<Customers>).results = customerController.afterRead(customersList);
     });
     srv.before('CREATE', 'SalesOrderHeaders', async (request: Request) => {
-        const result =  await salesOrderHeaderController.beforeCreate(request.data);
-        if(result.hasErrors) {
+        const result = await salesOrderHeaderController.beforeCreate(request.data);
+        if (result.hasErrors) {
             return request.reject(400, result.error?.message as string);
         }
         request.data.totalAmount = result.totalAmount;

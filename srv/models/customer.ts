@@ -3,7 +3,7 @@ export type CustomerProps = {
     firstName: string;
     lastName: string;
     email: string;
-}
+};
 
 export class CustomerModel {
     constructor(private props: CustomerProps) {}
@@ -29,7 +29,7 @@ export class CustomerModel {
     }
 
     public setDefaultEmailDomain(): CustomerModel {
-        if(!this.props.email.includes('@')) {
+        if (!this.props.email.includes('@')) {
             this.props.email = `${this.props.email}@gmail.com`;
         }
         return this;
@@ -40,7 +40,7 @@ export class CustomerModel {
             id: this.props.id,
             firstName: this.props.firstName,
             lastName: this.props.lastName,
-            email: this.props.email,
+            email: this.props.email
         };
     }
 }
