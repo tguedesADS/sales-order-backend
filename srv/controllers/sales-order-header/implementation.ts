@@ -1,8 +1,9 @@
 import { User } from '@sap/cds';
 
-import { CreationPayloadValidationResult, SalesOrderHeaderController } from './protocols';
 import { SalesOrderHeader, SalesOrderHeaders } from '@models/sales';
-import { SalesOrderHeaderService } from 'srv/services/sales-order-header/protocols';
+
+import { CreationPayloadValidationResult, SalesOrderHeaderController } from '@/controllers/sales-order-header';
+import { SalesOrderHeaderService } from '@/services/sales-order-header';
 
 export class SalesOrderHeaderControllerImpl implements SalesOrderHeaderController {
     constructor(private readonly service: SalesOrderHeaderService) {}

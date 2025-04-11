@@ -10,8 +10,10 @@
         "outDir": "./dist",
         "baseUrl": "./",
         "rootDir": "./",
+        "skipLibCheck": true,
         "paths": {
-            "@models/*": ["./@cds-models/*/index.ts"]
+            "@models/*": ["./@cds-models/*/index.ts"],
+            "@/*": ["./srv/*"]
         }
     },
     "include": ["srv"],
