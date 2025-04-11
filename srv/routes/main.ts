@@ -1,4 +1,4 @@
-import './configs/module-alias';
+import '../configs/module-alias';
 
 import { Request, Service } from '@sap/cds';
 
