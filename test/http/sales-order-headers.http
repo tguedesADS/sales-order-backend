@@ -29,15 +29,15 @@ Authorization: Basic admin:admin@123
             "id": "b9d18e43-4074-4c4b-b693-eed2d5d79ea9",
             "header_id": "{{id}}",
             "product_id": "{{productId1}}",
-            "quantity": 10,
-            "price": 100
+            "quantity": 20,
+            "price": 9000
         },
         {
             "id": "43303caa-d432-412b-aa63-1224831077ee",
             "header_id": "{{id}}",
             "product_id": "{{productId2}}",
-            "quantity": 5,
-            "price": 200
+            "quantity": 10,
+            "price": 8000
         }
     ]
 }
