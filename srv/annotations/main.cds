@@ -1,14 +1,35 @@
 using { MainService } from '../routes/main';
 
 annotate MainService.SalesOrderHeaders with @(  //nome da entidade
+    Capabilities: { //capabilidades da entidade o que pode ser feito com a entidade 
+        DeleteRestrictions : {
+            $Type : 'Capabilities.DeleteRestrictionsType',
+            Deletable: false, //não permite deletar
+        },
+        UpdateRestrictions : {
+            $Type : 'Capabilities.UpdateRestrictionsType',
+            Updatable: false, //não permite atualizar
+        },
+        FilterFunctions : [
+            'toLower', //ignora maiusculas e minusculas na busca
+        ],
+        FilterRestrictions : {
+            $Type : 'Capabilities.FilterRestrictionsType',
+            FilterExpressionRestrictions: [
+                {
+                    Property : id,
+                    AllowedExpressions: 'SearchExpression' //expressão de busca por parte do texto
+                }
+            ]
+        }
+    },
     UI: { 
         SelectionFields: [ //campos que serão exibidos no filtro
             id,
             totalAmount,
             customer_id,
-            status_id
+            status_id,
         ],
-
         LineItem: [ //campos que serão exibidos na lista/tabela
             {
                 $Type: 'UI.DataField', //tipo de campo
@@ -65,6 +86,64 @@ annotate MainService.SalesOrderHeaders with @(  //nome da entidade
                     }
                 }
         ],
+        HeaderInfo  : {
+            $Type : 'UI.HeaderInfoType',
+            TypeName : 'Pedido de Venda',
+            TypeNamePlural : 'Pedidos de Venda',
+            Title: {
+                $Type: 'UI.DataField',
+                Value: 'Pedido: {id}',
+            }
+        },
+        Facets: [ //grupos de campos tela de detalhes
+            {
+                ID: 'SalesOrderData',
+                $Type: 'UI.CollectionFacet',
+                Label: 'Informações do Cabeçalho do Pedido', 
+                Facets: [
+                    {
+                        ID: 'header',
+                        $Type: 'UI.ReferenceFacet',
+                        Target: '@UI.FieldGroup#Header',
+                    }
+                ]
+            },
+            {
+                ID: 'customerData',
+                $Type: 'UI.ReferenceFacet', //tipo de facet
+                Label: 'Informações do Cliente', 
+                Target: 'customer/@UI.FieldGroup#CustomerData', //target da facet
+            },
+            {
+                ID: 'itemsData',
+                $Type: 'UI.ReferenceFacet', //tipo de facet
+                Label: 'Itens do Pedido', 
+                Target: 'items/@UI.LineItem', // tabela de itens na tela de detalhes
+            },
+        ],
+        FieldGroup#Header: { //nome do grupo de campos
+            $Type: 'UI.FieldGroupType', //tipo de grupo de campos
+            Data: [
+                {
+                    $Type: 'UI.DataField',
+                    Value: id,
+                },
+                {
+                    $Type: 'UI.DataField',
+                    Value: totalAmount,
+                },
+                {
+                    $Type: 'UI.DataField',
+                    Value: createdAt,
+                }
+                ,
+                {
+                    $Type: 'UI.DataField',
+                    Value: createdBy,
+                }
+            ]
+
+        }
     }
 ) {
     id @title: 'ID';
@@ -122,4 +201,76 @@ annotate MainService.SalesOrderHeaders with @(  //nome da entidade
 
 annotate MainService.SalesOrderStatuses with {
     id @Common.Text: description @Common.TextArrangement: #TextOnly; //anotação para a matchecode suspensa
+};
+
+annotate MainService.Customers with @( // tela de detalhes do cliente
+    UI: {
+        FieldGroup#CustomerData : { //nome do grupo de campos
+            $Type : 'UI.FieldGroupType', //tipo de grupo de campos
+            Data: [
+                {
+                    $Type: 'UI.DataField',
+                    Value: id,
+                },
+                {
+                    $Type: 'UI.DataField',
+                    Value: firstName,
+                },
+                {
+                    $Type: 'UI.DataField',
+                    Value: lastName,
+                },
+                {
+                    $Type: 'UI.DataField',
+                    Value: email,
+                }
+            ]
+        },
+    }
+) {
+    id @title: 'ID';
+    firstName @title: 'Nome';
+    lastName @title: 'Sobrenome';
+    email @title: 'E-mail';
+}
+
+annotate MainService.SalesOrderItems with @( 
+    UI: {
+        LineItem: [
+            {
+                $Type: 'UI.DataField',
+                Value: id,
+                ![@HTML5.CssDefaults]: {
+                    $Type: 'HTML5.CssDefaultsType',
+                    width: '18rem'
+                }
+            },
+            {
+                $Type: 'UI.DataField',
+                Value: product.name,
+                ![@HTML5.CssDefaults]: {
+                    $Type: 'HTML5.CssDefaultsType',
+                    width: '15rem'
+                }
+            },
+            {
+                $Type: 'UI.DataField',
+                Value: price,
+            },
+            {
+                $Type: 'UI.DataField',
+                Value: quantity,
+            }
+        ],
+    }
+) {
+    id @title: 'ID';
+    quantity @title: 'Quantidade';
+    price @title: 'Preço';
+    header @UI.Hidden @UI.HiddenFilter; //oculta o campo header, oculta filtros e lista de seleção
+    product @UI.Hidden @UI.HiddenFilter; //oculta o campo product, oculta filtros e lista de seleção
+};
+
+annotate MainService.Products with {
+    name @title: 'Nome';
 };
