@@ -1,6 +1,6 @@
 import cds from '@sap/cds';
 
-import { ExpectedResult as SalesReportByDays } from '@models/db/types/SalesReportByDays';
+import { ExpectedResult as SalesReport } from '@models/db/types/SalesReport';
 
 import { SalesReportModel } from '@/models/sales-report';
 import { SalesReportRepository } from '@/repositories/sales-report';
@@ -25,7 +25,7 @@ export class SalesReportRepositoryImpl implements SalesReportRepository {
         if (salesReports.length === 0) {
             return null;
         }
-        return salesReports.map((salesReport: SalesReportByDays) =>
+        return salesReports.map((salesReport: SalesReport) =>
             SalesReportModel.with({
                 salesOrderId: salesReport.salesOrderId as string,
                 salesOrderTotalAmount: salesReport.salesOrderTotalAmount as number,

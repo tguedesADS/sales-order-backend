@@ -1,12 +1,12 @@
-import { ExpectedResult as SalesReportByDays } from '@models/db/types/SalesReportByDays';
+import { ExpectedResult as SalesReport } from '@models/db/types/SalesReport';
 
-import { SaleReportController } from '@/controllers/sales-report';
+import { SalesReportController } from '@/controllers/sales-report';
 import { SalesReportService } from '@/services/sales-report';
 
-export class SalesReportControllerImpl implements SaleReportController {
+export class SalesReportControllerImpl implements SalesReportController {
     constructor(private readonly service: SalesReportService) {}
 
-    async findByDays(days: number): Promise<SalesReportByDays[]> {
+    async findByDays(days: number): Promise<SalesReport[]> {
         return this.service.findByDays(days);
     }
 }
