@@ -1,3 +1,4 @@
+// eslint-disable max-lines-per-function
 import '../configs/module-alias';
 
 import { Request, Service } from '@sap/cds';
@@ -7,6 +8,7 @@ import { Customers, SalesOrderHeaders } from '@models/sales';
 import { FullResquetParams } from '@/routes/protocols';
 import { customerController } from '@/factories/controllers/customer';
 import { salesOrderHeaderController } from '@/factories/controllers/sales-order-header';
+import { salesReportController } from '@/factories/controllers/sales-report';
 
 export default (srv: Service) => {
     srv.before('READ', '*', (request: Request) => {
@@ -31,5 +33,9 @@ export default (srv: Service) => {
     });
     srv.after('CREATE', 'SalesOrderHeaders', async (headers: SalesOrderHeaders, request: Request) => {
         await salesOrderHeaderController.afterCreate(headers, request.user);
+    });
+    srv.on('getSalesReportByDays', async (request: Request) => {
+        const days = request.data?.days || 7;
+        return salesReportController.findByDays(days);
     });
 };
