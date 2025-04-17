@@ -1,4 +1,4 @@
-// eslint-disable max-lines-per-function
+/* eslint-disable max-lines-per-function */
 import '../configs/module-alias';
 
 import { Request, Service } from '@sap/cds';
@@ -37,5 +37,9 @@ export default (srv: Service) => {
     srv.on('getSalesReportByDays', async (request: Request) => {
         const days = request.data?.days || 7;
         return salesReportController.findByDays(days);
+    });
+    srv.on('getSalesReportByCustomerId', async (request: Request) => {
+        const [{ id: customerId }] = request.params as unknown as { id: string }[];
+        return salesReportController.findByCustomerId(customerId);
     });
 };
