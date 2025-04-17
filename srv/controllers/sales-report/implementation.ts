@@ -9,4 +9,8 @@ export class SalesReportControllerImpl implements SalesReportController {
     async findByDays(days: number): Promise<SalesReport[]> {
         return this.service.findByDays(days);
     }
+
+    async findByCustomerId(customerId: string): Promise<SalesReport[]> {
+        return this.service.findByCustomerId(customerId);
+    }
 }
