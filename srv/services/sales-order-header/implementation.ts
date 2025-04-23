@@ -76,13 +76,13 @@ export class SalesOrderHeaderServiceImpl implements SalesOrderHeaderService {
         const bulkCreateHeaders: SalesOrderHeaderModel[] = [];
         for (const headerObject of headers) {
             const productValidation = await this.validateProductsOnCreation(headerObject);
-            if (!productValidation.hasErrors) {
+            if (productValidation.hasErrors) {
                 return productValidation;
             }
             const items = this.getSalesOrderItems(headerObject, productValidation.products as ProductModel[]);
             const header = this.getSalesOrderHeader(headerObject, items);
             const customerValidationResult = await this.validateCustomerOnCreation(headerObject);
-            if (!customerValidationResult.hasErrors) {
+            if (customerValidationResult.hasErrors) {
                 return customerValidationResult;
             }
             const headerValidationResult = header.validateCreationPayload({
@@ -95,8 +95,13 @@ export class SalesOrderHeaderServiceImpl implements SalesOrderHeaderService {
         }
         await this.salesOrderHeaderRepository.bulkCreate(bulkCreateHeaders);
         await this.afterCreate(headers, loggedUser);
+        return this.serializeBulkCreateResult(bulkCreateHeaders);
+    }
+
+    private serializeBulkCreateResult(headers: SalesOrderHeaderModel[]): CreationPayloadValidationResult {
         return {
-            hasErrors: false
+            hasErrors: false,
+            headers: headers.map((header) => header.toCreationObject())
         };
     }
 
@@ -127,7 +132,8 @@ export class SalesOrderHeaderServiceImpl implements SalesOrderHeaderService {
             };
         }
         return {
-            hasErrors: false
+            hasErrors: false,
+            customer
         };
     }
 
