@@ -98,3 +98,10 @@ GET http://{{localhost}}/SalesOrderHeaders?$top=3&$skip=0
 GET http://{{localhost}}/SalesOrderHeaders?$search=2kcg
 
 ###
+
+# Funcionamento da função clonar pedidos
+POST http://{{localhost}}/SalesOrderHeaders(4308485f-361d-4ead-820e-949a8d35d398)/cloneSalesOrder
+Content-Type: application/json
+Authorization: Basic admin:admin@123
+
+{}
