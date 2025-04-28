@@ -3,6 +3,7 @@ using { db.types.SalesReport, db.types.BulkCreateSalesOrder } from '../../db/typ
 
 //Entities
 @requires: 'authenticated-user'
+@path: '/sales-order'
 service MainService {
     entity SalesOrderHeaders as projection on sales.SalesOrderHeaders actions {
         action cloneSalesOrder() returns Boolean;
