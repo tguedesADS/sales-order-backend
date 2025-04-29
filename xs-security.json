@@ -41,7 +41,7 @@
         {
             "name": "admin",
             "description": "Admin user",
-            "attributes-references": [
+            "attribute-references": [
                 "id",
                 "groups"
             ],
@@ -52,7 +52,7 @@
         {
             "name": "read_only_user",
             "description": "ReadOnly user",
-            "attributes-references": [
+            "attribute-references": [
                 "id",
                 "groups"
             ],
