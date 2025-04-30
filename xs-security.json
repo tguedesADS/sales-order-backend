@@ -12,7 +12,7 @@
             "description": "Admin user"
         },
         {
-            "name": "$XSAPPNAME.sales-order.reade_only_user",
+            "name": "$XSAPPNAME.sales-order.read_only_user",
             "description": "ReadOnly user"
         }
     ],
@@ -57,8 +57,13 @@
                 "groups"
             ],
             "scope-references": [
-                "$XSAPPNAME.sales-order.reade_only_user"
+                "$XSAPPNAME.sales-order.read_only_user"
             ]
         }
-    ]
+    ],
+    "oauth2-configuration": {
+        "redirect-uris": [
+            "https://83fec672trial-*/**"
+        ]
+    }
 }
