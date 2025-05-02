@@ -1,19 +1,26 @@
 import { Customers } from '@models/sales';
 
+import { AbstractError, ServerError } from '@/errors';
+import { Either, left, right } from '@sweet-monads/either';
 import { CustomerModel } from '@/models/customer';
 import { CustomerService } from '@/services/customer';
 
 export class CustomerServiceImpl implements CustomerService {
-    public afterRead(customerList: Customers): Customers {
-        const customers = customerList.map((c) => {
-            const customer = CustomerModel.with({
-                id: c.id as string,
-                firstName: c.firstName as string,
-                lastName: c.lastName as string,
-                email: c.email as string
+    public afterRead(customerList: Customers): Either<AbstractError, Customers> {
+        try {
+            const customers = customerList.map((c) => {
+                const customer = CustomerModel.with({
+                    id: c.id as string,
+                    firstName: c.firstName as string,
+                    lastName: c.lastName as string,
+                    email: c.email as string
+                });
+                return customer.setDefaultEmailDomain().toObject();
             });
-            return customer.setDefaultEmailDomain().toObject();
-        });
-        return customers;
+            return right(customers);
+        } catch (error) {
+            const errorInstance: Error = error as Error;
+            return left(new ServerError(errorInstance.stack as string, errorInstance.message));
+        }
     }
 }
