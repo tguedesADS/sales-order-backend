@@ -22,7 +22,11 @@ export default (srv: Service) => {
         }
     });
     srv.after('READ', 'Customers', (customersList: Customers, request) => {
-        (request as unknown as FullResquetParams<Customers>).results = customerController.afterRead(customersList);
+        const result = customerController.afterRead(customersList);
+        if (result.status >= 400) {
+            return request.error(result.status, result.data as string);
+        }
+        (request as unknown as FullResquetParams<Customers>).results = result.data as Customers;
     });
     srv.before('CREATE', 'SalesOrderHeaders', async (request: Request) => {
         const result = await salesOrderHeaderController.beforeCreate(request.data);
