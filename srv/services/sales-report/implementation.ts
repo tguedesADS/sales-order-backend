@@ -14,7 +14,7 @@ export class SalesReportServiceImpl implements SalesReportService {
             const reportData = await this.salesReportRepository.findByDays(days);
             if (!reportData) {
                 const stack = new Error().stack as string;
-                return left(new NotFoundError('Nenhum dado encontrado para o período selecionado', stack));
+                return left(new NotFoundError('Nenhum dado encontrado para os parâmetros informados', stack));
             }
             const mappedData = reportData.map((r) => r.toObject());
             return right(mappedData);
@@ -24,11 +24,18 @@ export class SalesReportServiceImpl implements SalesReportService {
         }
     }
 
-    public async findByCustomerId(customerId: string): Promise<SalesReport[]> {
-        const reportData = await this.salesReportRepository.findByCustomerId(customerId);
-        if (!reportData) {
-            return [];
+    public async findByCustomerId(customerId: string): Promise<Either<AbstractError, SalesReport[]>> {
+        try {
+            const reportData = await this.salesReportRepository.findByCustomerId(customerId);
+            if (!reportData) {
+                const stack = new Error().stack as string;
+                return left(new NotFoundError('Nenhum dado encontrado para os parâmetros informados', stack));
+            }
+            const mappedData = reportData.map((r) => r.toObject());
+            return right(mappedData);
+        } catch (error) {
+            const errorInstance = error as Error;
+            return left(new ServerError(errorInstance.stack as string, errorInstance.message));
         }
-        return reportData.map((r) => r.toObject());
     }
 }
