@@ -48,7 +48,11 @@ export default (srv: Service) => {
     });
     srv.on('getSalesReportByCustomerId', async (request: Request) => {
         const [{ id: customerId }] = request.params as unknown as { id: string }[];
-        return salesReportController.findByCustomerId(customerId);
+        const result = await salesReportController.findByCustomerId(customerId);
+        if (result.status >= 400) {
+            return request.error(result.status, result.data as string);
+        }
+        return result.data;
     });
     srv.on('bulkCreateSalesOrder', async (request: Request) => {
         const { user, data } = request;
