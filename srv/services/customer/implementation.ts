@@ -1,7 +1,8 @@
+import { Either, left, right } from '@sweet-monads/either';
+
 import { Customers } from '@models/sales';
 
 import { AbstractError, ServerError } from '@/errors';
-import { Either, left, right } from '@sweet-monads/either';
 import { CustomerModel } from '@/models/customer';
 import { CustomerService } from '@/services/customer';
 
