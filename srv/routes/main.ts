@@ -40,7 +40,11 @@ export default (srv: Service) => {
     });
     srv.on('getSalesReportByDays', async (request: Request) => {
         const days = request.data?.days || 7;
-        return salesReportController.findByDays(days);
+        const result = await salesReportController.findByDays(days);
+        if (result.status >= 400) {
+            return request.error(result.status, result.data as string);
+        }
+        return result.data;
     });
     srv.on('getSalesReportByCustomerId', async (request: Request) => {
         const [{ id: customerId }] = request.params as unknown as { id: string }[];
